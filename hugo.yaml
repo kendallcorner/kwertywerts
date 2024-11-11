@@ -137,3 +137,11 @@ markup:
     # guessSyntax: true
     # lineNos: true
     # style: monokai
+
+deployment:
+  targets:
+    name: production
+
+    # Amazon Web Services S3; see https://gocloud.dev/howto/blob/#s3
+    # For S3-compatible endpoints, see https://gocloud.dev/howto/blob/#s3-compatible
+    URL: s3://kendallwerts.com?region=us-east-2
