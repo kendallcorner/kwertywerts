@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      HUGO_VERSION: 0.138.0
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       AWS_DEFAULT_REGION: us-east-2
@@ -33,16 +32,17 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-        
-      - name: Install Hugo CLI
-        run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
           
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
           set -ex
+          sudo apt update
           sudo snap install aws-cli --classic
+          sudo apt install golang-go
+          git clone https://github.com/gohugoio/hugo.git
+          cd hugo
+          go install --tags extended
+          hugo version
           hugo
           hugo deploy
