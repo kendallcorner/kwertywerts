@@ -20,6 +20,11 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    env:
+      HUGO_VERSION: 0.138.0+extended+withdeploy
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      AWS_DEFAULT_REGION: us-east-2
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -28,15 +33,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-
+        
+      - name: Install Hugo CLI
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+          
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
           set -ex
-          sudo snap install hugo
           sudo snap install aws-cli --classic
-          set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-          set AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-          set AWS_DEFAULT_REGION=us-east-2
           hugo
           hugo deploy
