@@ -39,8 +39,8 @@ jobs:
           set -ex
           sudo apt update
           sudo snap install aws-cli --classic
-          sudo apt install golang-go
-          CGO_ENABLED=1 sudo go install -tags extended,withdeploy github.com/gohugoio/hugo@@v0.128.0)
+          wget https://github.com/gohugoio/hugo/releases/download/v0.138.0/hugo_extended_withdeploy_0.138.0_linux-amd64.tar.gz
+          tar -xf hugo_extended_withdeploy_0.138.0_linux-amd64.tar.gz -C /bin
           hugo version
           hugo
           hugo deploy
