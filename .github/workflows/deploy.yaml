@@ -26,8 +26,14 @@ jobs:
       AWS_DEFAULT_REGION: us-east-2
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Checkout repo on source_branch
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          # <<recommended if project uses git submodules for any purpose>>
+          # <<required if deploying to git submodule directory>>
+          fetch-depth: '0'
+          # <<fetch-depth: '0' currently required until shallow clone problems are solved>>
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
